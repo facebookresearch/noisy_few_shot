@@ -216,7 +216,7 @@ class MetaTrainer:
             
         return data, labels, mask_indices, noise_positions
         
-    def proto_loss_acc(
+    def loss_acc(
         self, batch, outlier_batch=None, support_label_noise_choices=[0]
     ):
         ways = self.args.train_way if self.model.training else self.args.test_way

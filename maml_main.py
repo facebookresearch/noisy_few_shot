@@ -1,14 +1,5 @@
 #!/usr/bin/env python3
 
-"""
-Demonstrates how to:
-    * use the MAML wrapper for fast-adaptation,
-    * use the benchmark interface to load mini-ImageNet, and
-    * sample tasks and split them in adaptation and evaluation sets.
-
-To contrast the use of the benchmark interface with directly instantiating mini-ImageNet datasets and tasks, compare with `protonet_miniimagenet.py`.
-"""
-
 import argparse
 import random
 import os
@@ -28,7 +19,7 @@ from learn2learn.data.transforms import (
 
 from data_utils import get_data_loaders, get_support_noise_query_indices, preprocess_data_labels
 from noise_utils import add_noise
-from protonet_utils import accuracy
+from few_shot_utils import accuracy
 
 
 def parse_args():

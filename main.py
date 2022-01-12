@@ -17,7 +17,7 @@ from warmup_scheduler import GradualWarmupScheduler
 
 from data_utils import get_data_loaders
 from models import ProtoConvnet, ProtoConvTransformer
-from protonet_utils import MetaTrainer
+from few_shot_utils import MetaTrainer
 
 
 if __name__ == '__main__':
@@ -247,7 +247,7 @@ if __name__ == '__main__':
             batch = next(iter(data_loaders["train"]))
             outlier_batch = next(iter(data_loaders["outlier_train"])) if args.noise_type == "outlier" else None
 
-            train_losses, train_accs = meta_trainer.proto_loss_acc(
+            train_losses, train_accs = meta_trainer.loss_acc(
                 batch, outlier_batch, args.train_support_label_noise_choices
             )
             
@@ -281,7 +281,7 @@ if __name__ == '__main__':
         for i, batch in enumerate(data_loaders["valid"]):
             outlier_batch = next(iter(data_loaders["outlier_test"])) if args.noise_type == "outlier" else None
             
-            valid_losses, valid_accs = meta_trainer.proto_loss_acc(
+            valid_losses, valid_accs = meta_trainer.loss_acc(
                 batch, outlier_batch, support_label_noise_choices=[0.0]
             )
             
@@ -395,7 +395,7 @@ if __name__ == '__main__':
                     batch, outlier_batch, support_label_noise_choices=[label_noise]
                 )
             else:
-                _, accs = meta_trainer.proto_loss_acc(
+                _, accs = meta_trainer.loss_acc(
                     batch, outlier_batch, support_label_noise_choices=[label_noise]
                 )
             test_accs.append(accs["accuracy"].cpu())

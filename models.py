@@ -3,7 +3,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from protonet_utils import gen_prototypes
+from few_shot_utils import gen_prototypes
 from res12 import Res12
 from transformer_assets import TransformerEncoderLayer
 
