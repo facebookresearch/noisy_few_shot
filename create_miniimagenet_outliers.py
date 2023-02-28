@@ -9,12 +9,9 @@ LICENSE file in the root directory of this source tree.
 
 
 import argparse
-import csv
 import cv2
-import glob
 import os
 import pickle
-from shutil import copyfile
 
 import numpy as np
 from tqdm import tqdm
@@ -1773,7 +1770,7 @@ def create_miniimagenet_outlier(imagenet_dir, images_per_class=600):
 
     # Format test set images
     for i, c in tqdm(enumerate(test_outlier_keys)):
-        src_class_dir = os.path.join(src_dir, c)
+        src_class_dir = os.path.join(imagenet_dir, c)
         image_filenames = os.listdir(src_class_dir)
 
         for j in range(images_per_class):
@@ -1791,16 +1788,25 @@ def create_miniimagenet_outlier(imagenet_dir, images_per_class=600):
         "image_data": np.copy(test_images[:, :, :, ::-1]),
         "labels": test_labels,
     }
+
+    output_dir = "./data/miniimagenet_outlier"
+    os.makedirs(output_dir)
+
     with open(
-        "./data/miniimagenet_outlier/mini-imagenet-outlier-cache-train.pkl", "wb"
+        os.path.join(output_dir, "mini-imagenet-outlier-cache-train.pkl"), "wb"
     ) as f:
         pickle.dump(train_data, f)
 
     with open(
-        "./data/miniimagenet_outlier/mini-imagenet-outlier-cache-test.pkl", "wb"
+        os.path.join(output_dir, "mini-imagenet-outlier-cache-test.pkl"), "wb"
     ) as f:
         pickle.dump(test_data, f)
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--imagenet_dir", type=str, required=True)
+    parser.add_argument("--images_per_class", type=int, default=600)
+    args = parser.parse_args()
+
+    create_miniimagenet_outlier(args.imagenet_dir, args.images_per_class)
